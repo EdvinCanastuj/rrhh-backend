@@ -50,6 +50,25 @@ namespace rrhh_backend.Services.Administracion
 
             return usuariosSinRoles;
         }
+        //obtener usuarios con rol asignado
+        public async Task<List<AdminRoleUsuarioDto>> GetUsuariosConRoles()
+        {
+            // Obtenemos todos los usuarios que tienen roles asignados
+            return await _context.AdminUserRole
+                .Select(ur => new AdminRoleUsuarioDto
+                {
+                    IdRole = ur.IdRole,
+                    NombreRol = ur.IdRoleNavigation.NombreRol,
+                    IdUsuario = ur.IdUsuario,
+                    Email = ur.IdUsuarioNavigation.Email,
+                    NombreUsuario = ur.IdUsuarioNavigation.NombreUsuario,
+                    IdColaborador = ur.IdUsuarioNavigation.IdColaborador ?? 0, // Asignar 0 si es null
+                    Nombres = ur.IdUsuarioNavigation.IdColaboradorNavigation != null ? ur.IdUsuarioNavigation.IdColaboradorNavigation.Nombres : "",
+                    PrimerApellido = ur.IdUsuarioNavigation.IdColaboradorNavigation != null ? ur.IdUsuarioNavigation.IdColaboradorNavigation.PrimerApellido : "",
+                    SegundoApellido = ur.IdUsuarioNavigation.IdColaboradorNavigation != null ? ur.IdUsuarioNavigation.IdColaboradorNavigation.SegundoApellido : ""
+                })
+                .ToListAsync();
+        }
 
         //Insertamos nuevo usuario
         public async Task CrearUsuario(string email, string password, string nombreUsuario, int? idColaborador)

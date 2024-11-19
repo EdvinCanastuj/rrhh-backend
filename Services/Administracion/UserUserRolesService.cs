@@ -68,6 +68,7 @@ namespace rrhh_backend.Services.Administracion
                     {
                         urp.IdUsuarioNavigation.IdUsuario,
                         urp.IdUsuarioNavigation.Email,
+                        urp.IdUsuarioNavigation.NombreUsuario,
                         urp.IdRoleNavigation.IdRole,
                         urp.IdRoleNavigation.NombreRol
                     })
@@ -79,6 +80,7 @@ namespace rrhh_backend.Services.Administracion
                     {
                         IdUsuario = group.Key.IdUsuario,
                         Email = group.Key.Email,
+                        NombreUsuario = group.Select(rp => rp.NombreUsuario).FirstOrDefault(),
                         RolList = group.Select(rp => new AdminRolListDto { IdRole = rp.IdRole, NombreRol = rp.NombreRol }).ToList()
                     })
                     .ToList();
@@ -123,6 +125,7 @@ namespace rrhh_backend.Services.Administracion
                 throw;
             }
         }
+
 
     }
 
