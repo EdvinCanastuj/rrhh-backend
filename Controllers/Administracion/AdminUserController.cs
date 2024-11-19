@@ -53,8 +53,7 @@ namespace rrhh_backend.Controllers.Administracion
 
 
 
-        //Obtener todos los usuarios  de la tabala User_User
-        // [Authorize(Roles = ("CrearUsuario, AsignarRol"))]
+        //Obtener todos los usuarios
         [HttpGet("listar")]
         public async Task<ActionResult<List<AdminUserListDto>>> GetAllUsers()
         {
@@ -84,8 +83,6 @@ namespace rrhh_backend.Controllers.Administracion
             }
         }
 
-        // PUT: User_User/ActualizarUsuario
-        // [Authorize(Roles = "CrearUsuario")]
         [HttpPut("actualizar/{id}")]
         public async Task<IActionResult> ActualizarUsuario(int id, [FromBody] AdminUpdateUserDto datosUsuario)
         {
@@ -107,25 +104,7 @@ namespace rrhh_backend.Controllers.Administracion
                 return BadRequest(new { Error = $"Error al intentar actualizar el usuario: {ex.Message}" });
             }
         }
-
-        [HttpPost("asingarRolUsuario")]
-        public async Task<IActionResult> AsignarRolUsuario([FromBody] AdminAsignarRolDto asignarRol)
-        {
-            try
-            {
-                var userExistente = await _userUserService.ObtenerUserPorId(asignarRol.idUsuario);
-                if (userExistente == null)
-                {
-                    return BadRequest(new { Error = $"El usuario no existe para poder asignarle un rol." });
-                }
-                await _userUserService.AsignarRolUsuario(asignarRol.idUsuario, asignarRol.idRol);
-                return Ok(new { Message = "Rol asignado correctamente." });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Error = $"Error al intentar asignar el rol al usuario: {ex.Message}" });
-            }
-        }   
+  
 
     }
 }
